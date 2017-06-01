@@ -1,10 +1,25 @@
 page-home {
 
-    .item-avatar  {     
-    width:100% !important;  
-    height : 100% !important;  
-    max-width: 100px !important;  //any size
-    max-height: 100px !important; //any size 
-    }
+.userProfile {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
+}
+
+.center {
+  display: block;
+  margin: 0 auto;
+}
+
+.one {
+  background-image: url('https://lumiere-a.akamaihd.net/v1/images/open-uri20150422-20810-10n7ovy_9b42e613.jpeg');
+}
+
+
 
 }

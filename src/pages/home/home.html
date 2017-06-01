@@ -8,16 +8,28 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Your profile</h3>
-   <ion-item>
-        <ion-avatar item-start>
-          <img src="https://lumiere-a.akamaihd.net/v1/images/open-uri20150422-20810-10n7ovy_9b42e613.jpeg">
-        </ion-avatar>
-  </ion-item>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <div>
+  
+      <div class="userProfile center one"> </div> <br>
+      <h3 class="center" style="text-align: center">Xerife Woody</h3>
+
+  </div>
+  <h2>
+    Próximos jogos
+  </h2>
+
+  <!--<img src="http://www.cpex.eb.mil.br/images/calendario-icone.jpg"/>.-->
+  <ion-card *ngFor="let match of nextMatches">
+    <ion-card-content>
+      <ion-card-title>
+        {{match.name}}
+      </ion-card-title>
+        {{match.date}}
+    </ion-card-content>
+  </ion-card>
+
+
 
   <button ion-button secondary menuToggle>Toggle Menu</button>
 </ion-content>
