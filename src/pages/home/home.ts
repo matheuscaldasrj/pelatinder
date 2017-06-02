@@ -1,20 +1,30 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { FireBase } from './../../services/firebase.service';
+import { FirebaseService } from './../../services/firebase.service';
 import { Pelada } from './../../models/pelada.model';
+import { FirebaseListObservable } from 'angularfire2/database';
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
 })
+
 export class HomePage {
 
-  nextMatches = []
+  nextMatches;
 
-  constructor(public navCtrl: NavController) {
-     let firebase = new FireBase();
-     this.nextMatches = firebase.getNextMatches();
+  createNewGame() {
+    console.log("lets create a new game")
+  }
+  constructor(public navCtrl: NavController, public firebaseService: FirebaseService) {
+      firebaseService.getNextMatches().subscribe(items => {
+        this.nextMatches = items
+        console.log(items)
+      });
   }
 
-
+  public teste() {
+    alert("Em teste")
+  }
+  
 }

@@ -6,30 +6,25 @@
     <ion-title>Home </ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-
   <div>
-  
-      <div class="userProfile center one"> </div> <br>
-      <h3 class="center" style="text-align: center">Xerife Woody</h3>
-
+    <div class="userProfile center one"> </div> <br>
+    <h3 class="center" style="text-align: center">Xerife Woody</h3>
   </div>
   <h2>
     Próximos jogos
   </h2>
 
-  <!--<img src="http://www.cpex.eb.mil.br/images/calendario-icone.jpg"/>.-->
-  <ion-card *ngFor="let match of nextMatches">
+
+  <ion-card *ngFor="let currentMatch of nextMatches">
     <ion-card-content>
       <ion-card-title>
-        {{match.name}}
+        {{currentMatch.name}}
       </ion-card-title>
-        {{match.date}}
+      {{currentMatch.data}} {{currentMatch.local}}
     </ion-card-content>
   </ion-card>
 
-
-
   <button ion-button secondary menuToggle>Toggle Menu</button>
+  <button ion-button (click)="createNewGame()" color="secondary">Secondary</button>
 </ion-content>
