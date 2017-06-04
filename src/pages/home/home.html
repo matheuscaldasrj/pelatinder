@@ -16,7 +16,7 @@
   </h2>
 
 
-  <ion-card *ngFor="let currentMatch of nextMatches">
+  <ion-card *ngFor="let currentMatch of nextMatches" (click)="showDetails(currentMatch)">
     <ion-card-content>
       <ion-card-title>
         {{currentMatch.name}}
@@ -25,6 +25,8 @@
     </ion-card-content>
   </ion-card>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
-  <button ion-button (click)="createNewGame()" color="secondary">Secondary</button>
+  <!--<button ion-button secondary menuToggle>Toggle Menu</button>-->
+  <button ion-button block (click)="createNewMatch()" color="secondary">Adicionar nova pelada</button>
+
+
 </ion-content>

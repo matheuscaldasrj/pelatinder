@@ -1,6 +1,4 @@
-
-
-import { Pelada } from './../models/pelada.model'
+import { Match } from './../models/match.model'
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
@@ -34,12 +32,13 @@ export class FirebaseService{
         // return nextMatches;
     }
 
-    addMatch(pelada : Pelada){
-        this.angularFireDatabase.list('/matches').push(pelada.name)
+    addMatch(match : Match){
+        this.angularFireDatabase.list('/matches').push(match)
     }
 
-    removeItem(pelada : Pelada){
-        this.angularFireDatabase.list('/matches').remove(pelada.name)
+    removeItem(match : Match){
+
+        this.angularFireDatabase.list('/matches').remove(match.name)
     }
 
 }

@@ -1,0 +1,32 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Nova pelada</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+ <ion-item>
+     <ion-label floating>Nome</ion-label>
+     <ion-input type="text" [(ngModel)]="name" ></ion-input>
+   </ion-item>
+
+  <ion-item>
+     <ion-label floating>Local</ion-label>
+     <ion-input type="text" [(ngModel)]="local" ></ion-input>
+   </ion-item>
+
+   <ion-item>
+      <ion-label floating>Numero de Pessoas</ion-label>
+      <ion-input type="number" [(ngModel)]="numberOfPeople" ></ion-input>
+    </ion-item>
+
+    <button (click)="createNewMatch()" block ion-button color="secondary" round>
+      Criar
+    </button>
+
+
+</ion-content>
