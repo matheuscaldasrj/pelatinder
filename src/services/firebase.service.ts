@@ -18,7 +18,11 @@ export class FirebaseService{
     }
 
     removeItem(match : Match){
-        this.angularFireDatabase.list('/matches').remove(match.name)
+        if(match['$key']){
+            this.angularFireDatabase.list('/matches').remove(match['$key'])
+        }
+        //else do nothing to prevent deleting all list :0
+        
     }
 
 }
