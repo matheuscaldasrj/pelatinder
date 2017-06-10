@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Pelada</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+
+Nome: {{match.name}} <br><br>
+Data: {{match.date | date : format : timezone}} <br><br>
+Local: {{match.local}} <br><br>
+Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}} <br><br>
+
+
+<button (click)="deleteMatch()" block ion-button color="danger" round>
+  Excluir
+</button>
+
+</ion-content>

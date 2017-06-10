@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FirebaseService } from './../../services/firebase.service';
 import { Match } from './../../models/match.model';
-import { FirebaseListObservable } from 'angularfire2/database';
 import {NewMatchPage} from './../new-match/new-match';
+import {MatchDetailsPage} from './../match-details/match-details';
 
 @Component({
   selector: 'page-home',
@@ -20,23 +20,15 @@ export class HomePage {
         console.log(items)
       });
   }
-
-  public teste() {
-    alert("Em teste")
-  }
   
   createNewMatch(){
     this.navCtrl.push(NewMatchPage);
   }
 
   showDetails(match : Match){
-    alert("Pagina show details");
-    console.log(match);
-    //TODO
-    //add navigation to details page passing as paramteer
-    //the match which was clicked
-    // this.navCtrl.push(details, {
-    //   match: match
-    // })
+    this.navCtrl.push(MatchDetailsPage, {
+      match: match
+    });
+
   }
 }

@@ -6,6 +6,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { NewMatchPage } from '../pages/new-match/new-match';
+import { MatchDetailsPage } from '../pages/match-details/match-details';
+import { LoginPage } from '../pages/login/login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,6 +17,8 @@ import { HttpModule } from '@angular/http';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { FirebaseService } from './../services/firebase.service';
+import { DatePicker } from '@ionic-native/date-picker';
+
  
 const firebaseConfig = {
     apiKey: "AIzaSyCUE7XBqhtqVHBbI1ZpKDS6uY7O7DHgTAs",
@@ -30,26 +34,31 @@ const firebaseConfig = {
     MyApp,
     HomePage,
     ListPage,
-    NewMatchPage
+    NewMatchPage,
+    MatchDetailsPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpModule,
     AngularFireDatabaseModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
     ListPage,
-    NewMatchPage
+    NewMatchPage,
+    MatchDetailsPage,
+    LoginPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     FirebaseService,
+    DatePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
