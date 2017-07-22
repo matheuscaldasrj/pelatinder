@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { FirebaseService } from './../../services/firebase.service';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+
+import { User } from './../../models/user.model';
+import {HomePage} from './../home/home';
+
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -14,11 +13,28 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LoginPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  user: User;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public firebaseService: FirebaseService, public loadingCtrl: LoadingController) {
+    this.user = new User();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
+
+
+  googleLogin(){
+      console.log("on login method")
+      this.goToHomePage();
+  }
+
+    goToHomePage(){
+      this.navCtrl.setRoot(HomePage, {
+        user: this.user
+      });
+
+  }
+
 
 }
