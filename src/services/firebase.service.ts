@@ -1,7 +1,6 @@
 import { Match } from './../models/match.model'
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import * as firebase from 'firebase/app'
 
 
 @Injectable()
@@ -19,7 +18,7 @@ export class FirebaseService{
         return this.angularFireDatabase.list('/matches').push(match);
     }
 
-    removeItem(match : Match){
+    removeMatch(match : Match){
         if(match['$key']){
             return this.angularFireDatabase.list('/matches').remove(match['$key'])
         }
@@ -27,9 +26,5 @@ export class FirebaseService{
         return null;
     }
 
-    loginWithGoogle(){
-        // TODO WITHOUT POP UP
-        // return this.afAuth.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
-    }
 
 }
