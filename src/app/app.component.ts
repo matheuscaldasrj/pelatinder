@@ -3,14 +3,15 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+//pages
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
-import { ListPage } from '../pages/list/list';
 
+//services
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from '../providers/auth-service/auth-service';
-
 import {ToastService} from './../services/toast.service';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -45,8 +46,7 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage, icon: 'person'},
-      { title: 'List', component: ListPage, icon: 'information-circle' }
+      { title: 'Home', component: HomePage, icon: 'person'}
     ];
 
   }
