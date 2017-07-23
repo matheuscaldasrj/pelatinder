@@ -8,16 +8,25 @@ import { ListPage } from '../pages/list/list';
 import { NewMatchPage } from '../pages/new-match/new-match';
 import { MatchDetailsPage } from '../pages/match-details/match-details';
 import { LoginPage } from '../pages/login/login';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
-//Firebase
 import { HttpModule } from '@angular/http';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+//Firebase
 import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AuthService } from '../providers/auth-service/auth-service';
+import {Facebook} from '@ionic-native/facebook';
 import { FirebaseService } from './../services/firebase.service';
+import { AngularFireAuth } from 'angularfire2/auth';
+
+// datePicker
 import { DatePicker } from '@ionic-native/date-picker';
+import { ProfileComponent } from '../components/profile/profile';
+
+import { ToastService } from './../services/toast.service';
+
 
  
 const firebaseConfig = {
@@ -29,6 +38,8 @@ const firebaseConfig = {
     messagingSenderId: "149301331031"
   };
 
+  //
+
 @NgModule({
   declarations: [
     MyApp,
@@ -36,7 +47,8 @@ const firebaseConfig = {
     ListPage,
     NewMatchPage,
     MatchDetailsPage,
-    LoginPage
+    LoginPage,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +71,12 @@ const firebaseConfig = {
     SplashScreen,
     FirebaseService,
     DatePicker,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    AuthService,
+    AngularFireAuth,
+    Facebook,
+    ToastService,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    
   ]
 })
 export class AppModule {}

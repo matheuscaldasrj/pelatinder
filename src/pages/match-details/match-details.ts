@@ -20,7 +20,7 @@ export class MatchDetailsPage {
   }
 
   deleteMatch(){
-      this.firebaseService.removeItem(this.match);
+      this.firebaseService.removeMatch(this.match);
       this.navCtrl.pop();
   }
 }
