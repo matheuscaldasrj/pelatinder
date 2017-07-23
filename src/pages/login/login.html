@@ -1,19 +1,9 @@
+<ion-content style="background-color: #0074D9;">
+   <span class="app-name"> <ion-icon name=at ></ion-icon>   Pelatinder </span>
 
-<ion-header>
+    <button class="facebook-button" ion-button color="facebook"  (click)="signInWithFacebook()">  
+      <ion-icon name=logo-facebook ></ion-icon>    
+      <span style="margin-left: 10px;margin-top: 2px;"> Log in with Facebook </span>
+    </button>
 
-  <ion-navbar>
-    <ion-title>login</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-
-  <button ion-button (click)="googleLogin()"> Google Login</button>
-  
-  <button ion-button (click)="faceBookLogin()"> Facebook Login </button>
-
-  <div> {{ user.name }}   {{user.email}} </div>
 </ion-content>

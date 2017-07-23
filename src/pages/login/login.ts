@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
-import { FirebaseService } from './../../services/firebase.service';
+import { IonicPage, NavController } from 'ionic-angular';
 
+import { AuthService } from '../../providers/auth-service/auth-service';
+import { AngularFireDatabase } from 'angularfire2/database';
 
-import { User } from './../../models/user.model';
 import {HomePage} from './../home/home';
+import {ToastService} from './../../services/toast.service';
+
 
 @IonicPage()
 @Component({
@@ -13,28 +15,25 @@ import {HomePage} from './../home/home';
 })
 export class LoginPage {
 
-  user: User;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public firebaseService: FirebaseService, public loadingCtrl: LoadingController) {
-    this.user = new User();
+  constructor(public navCtrl: NavController,
+              db: AngularFireDatabase,
+              private authService: AuthService,
+              private toastService: ToastService) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-  }
-
-
-  googleLogin(){
-      console.log("on login method")
+  signInWithFacebook(): void {
+    this.authService.signinWithFacebook()
+    .then(() =>  {
+      this.toastService.presentToast("Login efetuado com sucesso!");
       this.goToHomePage();
+    })
+    .catch( (e)=>{
+       console.error(e);
+       this.toastService.presentToast("Ocorreu um erro ao tentar logar");
+    });
   }
 
-    goToHomePage(){
-      this.navCtrl.setRoot(HomePage, {
-        user: this.user
-      });
-
-  }
-
-
+   goToHomePage(){ 
+      this.navCtrl.setRoot(HomePage, { });
+   }
 }
