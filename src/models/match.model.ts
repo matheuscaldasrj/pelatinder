@@ -5,7 +5,8 @@ export class Match {
     local: string;
     numOfPlayers: number;
     currentNumOfPlayers: number;
-
+    members: string[];
+ 
     constructor(name : string,date ,local : string, numOfPlayers : number){
         this.name = name;
         this.date = date;

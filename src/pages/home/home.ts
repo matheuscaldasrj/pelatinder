@@ -15,34 +15,48 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 export class HomePage {
 
-  nextMatches: Object[];
+  nextMatches: Match[];
   user: User;
 
   constructor(public navCtrl: NavController,public navParams: NavParams, public firebaseService: FirebaseService, private afAuth: AngularFireAuth) {
-      console.log("Construtor do home")
+
       const authObserver = afAuth.authState.subscribe(user=>{
         if(user){
+          //only happens in first login
+          console.log("first login");
+          console.log(user);
+
           this.user = new User();
           this.user.name = user.displayName;
           this.user.photo = user.photoURL;
+          this.user.uid = user.uid;
+          this.user.email = user.email;
+          this.user.matches = new Array();
+         
 
+          //add user to db
+          this.firebaseService.addUser(this.user);
           authObserver.unsubscribe();
         }
       })
 
       firebaseService.getNextMatches().subscribe(items => {
         this.nextMatches = items
-        console.log(items)
+        console.log("volta do getNExtMatches:")
+        console.log(items);
       });
   }
   
   createNewMatch(){
-    this.navCtrl.push(NewMatchPage);
+    this.navCtrl.push(NewMatchPage,{
+      user: this.user
+    });
   }
 
   showDetails(match : Match){
     this.navCtrl.push(MatchDetailsPage, {
-      match: match
+      match: match,
+      user: this.user
     });
 
   }
