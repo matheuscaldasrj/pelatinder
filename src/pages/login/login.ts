@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController } from 'ionic-angular';
 
 import { AuthService } from '../../providers/auth-service/auth-service';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import {HomePage} from './../home/home';
-import {ToastService} from './../../services/toast.service';
 
 import { CreateAccountPage } from './../create-account/create-account';
 import { LoginEmailPage } from './../login-email/login-email';
@@ -20,18 +19,28 @@ export class LoginPage {
   constructor(public navCtrl: NavController,
               db: AngularFireDatabase,
               private authService: AuthService,
-              private toastService: ToastService) {
+              private toastCtrl: ToastController) {
   }
 
   signInWithFacebook(): void {
+
+    let toast = this.toastCtrl.create({
+      duration: 3000,
+      position: "bottom"
+    });
+
+   
+
     this.authService.signinWithFacebook()
     .then(() =>  {
-      this.toastService.presentToast("Login efetuado com sucesso!");
+      toast.setMessage("Login efetuado com sucesso!");
+      toast.present();
       this.goToHomePage();
     })
     .catch( (e)=>{
-       console.error(e);
-       this.toastService.presentToast("Ocorreu um erro ao tentar logar");
+      console.error(e);
+      toast.setMessage("Ocorreu um erro ao tentar logar");
+      toast.present();
     });
   }
 

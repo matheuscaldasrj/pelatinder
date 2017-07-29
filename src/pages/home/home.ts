@@ -18,8 +18,9 @@ import { FirebaseListObservable } from "angularfire2/database";
 export class HomePage {
 
   nextMatchesRest: MatchRest[];
-  nextMatches: FirebaseListObservable<Match[]>;
+  nextMatches: Match[];
   user: User;
+  teste;
 
   constructor(public navCtrl: NavController,public navParams: NavParams, public firebaseService: FirebaseService, private afAuth: AngularFireAuth) {
 
@@ -27,16 +28,13 @@ export class HomePage {
 
         if(user){
           //only happens in first login
-          console.log("first login");
-          console.log(user);
-
           this.user = new User();
           this.user.name = user.displayName;
           this.user.photo = user.photoURL;
           this.user.uid = user.uid;
           this.user.email = user.email;
           this.user.matches = new Array();
-         
+          
           if(!user.displayName){
             this.user.name  = "Diego Ribas";
           }
@@ -44,16 +42,22 @@ export class HomePage {
             this.user.photo = "http://www.falandodeflamengo.com.br/wp-content/uploads/2016/07/diego-ribas-fenerbahce_jtdm01wkc14o1nizl91rivw2b.jpg"
           }
 
-          //add user to db
+          //add user to db (its the first time loggin in)
           this.firebaseService.addUser(this.user);
           authObserver.unsubscribe();
         }
       })
 
-      this.nextMatches = firebaseService.getNextMatches();
-  
+      firebaseService.getNextMatches().subscribe(matches => {
+        this.nextMatches = matches;
+      });
+
   }
   
+  teste2(){
+    console.log(this.teste);
+    
+  }
   buildMatchesFromMatchRest(){
     //  console.log("buildMatchesFromMatchRest")
     //  this.nextMatches = new Array();

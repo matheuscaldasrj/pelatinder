@@ -1,29 +1,44 @@
-import { Match } from './../models/match.model'
-import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { Injectable } from '@angular/core';
+import { MatchRest } from './../models/matchRest.model'
+import { Match } from './../models/match.model'
+import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/first'
+
 
 import { User } from './../models/user.model';
 
 @Injectable()
 export class FirebaseService{
 
-
+    mathches;
     constructor(public angularFireDatabase : AngularFireDatabase){
+
     }
 
     getNextMatches(){
-        return this.angularFireDatabase.list('/matches');
+        return  this.angularFireDatabase.list('/matches')
     }
 
-    addMatch(match : Match){
-       return this.angularFireDatabase.list('/matches').push(match);
-        
+    getMatch(matchKey : string){
+        return  this.angularFireDatabase.object('/matches/' + matchKey);
+    }
+
+    getUserInfo(userId: string){
+        return this.angularFireDatabase.object('/users/' + userId)
+    }
+    
+    addMatch(match : Match, user : User){
+       return this.angularFireDatabase.list('/matches').push(match).then((res) => {
+           return this.addMemberToMatch(res.key, user).then( () => {
+                return this.addMatchToUser(res.key, user);
+           });
+           
+       });
     }
 
     addUser(user : User){
         this.angularFireDatabase.object('/users/' + user.uid).set(user).then(() =>{
-            console.log("User was added: ");
-            console.log(user);
         })
     }
 
@@ -32,8 +47,8 @@ export class FirebaseService{
      * @param key the match key
      * @param user the user to be added
      */
-    addMemberToMatch(key : string, user : User){
-           this.angularFireDatabase.object('matches/' + key + '/members/' + user.uid).set("true");
+    private addMemberToMatch(key : string, user : User){
+           return this.angularFireDatabase.object('matches/' + key + '/members/' + user.uid).set("true");
     }
 
       /**
@@ -41,18 +56,48 @@ export class FirebaseService{
      * @param keyMatch the match key
      * @param user the user to be added/updated
      */
-    addMatchToUser(keyMatch : string, user : User){
-        this.angularFireDatabase.object('/users/' + user.uid + "/matches/" + keyMatch).set("true");
+    private addMatchToUser(keyMatch : string, user : User){
+        return this.angularFireDatabase.object('/users/' + user.uid + "/matches/" + keyMatch).set("true");
+    }
+
+      /**
+     * 
+     * @param keyMatch the match key
+     * @param user the user to be added to the match
+     */
+    joinUserToMatch(keyMatch : string, user : User){
+        return this.addMatchToUser(keyMatch,user).then( ()=>{
+            return this.addMemberToMatch(keyMatch, user);
+        })
     }
 
     removeMatch(match : Match){
-        if(match['$key']){
-            this.angularFireDatabase.list('/matches').remove(match['$key'])
-            this.angularFireDatabase.list('/members').remove(match['$key'])
+
+        if(match.$key){
+            //removing match from member
+            let membersIds = this.getAllAttrbutes(match.members);
+            membersIds.forEach(memberId => {
+                this.angularFireDatabase.list('/users/' + memberId + '/matches').remove(match.$key);
+            });
+            //removing members from match;
+            this.angularFireDatabase.list('/matches').remove(match.$key)
         }
+
         //else do nothing to prevent deleting all list :0
         return null;
     }
+
+    getAllAttrbutes(object : Object) : string[]{
+        let array = new Array();
+
+        for (var property in object) {
+            if (object.hasOwnProperty(property)) {
+                array.push(property);
+            }
+        }
+        return array;
+  }
+
 
 
 }

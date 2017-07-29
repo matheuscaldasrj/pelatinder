@@ -17,7 +17,6 @@ export class AuthService {
 
 
   signinWithFacebook(){
-    console.log("na signinWithFacebook! do AuthService")
     return this.facebook.login(['public_profile','email'])
             .then( (res: FacebookLoginResponse) =>{
                 //this.facebook.api('')

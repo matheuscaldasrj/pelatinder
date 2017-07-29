@@ -17,10 +17,6 @@ export class LoginEmailPage {
     constructor(public navCtrl: NavController, public navParams: NavParams, private authService : AuthService, private toastCtrl : ToastController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginEmailPage');
-  }
-
   logIn() {
 
     let toast = this.toastCtrl.create({

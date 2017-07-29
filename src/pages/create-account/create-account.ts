@@ -16,10 +16,6 @@ export class CreateAccountPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private authService : AuthService, private toastCtrl : ToastController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CreateAccountPage');
-  }
-
   createAccount(){
 
     let toast = this.toastCtrl.create({

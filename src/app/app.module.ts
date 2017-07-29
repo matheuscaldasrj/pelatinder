@@ -26,9 +26,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { DatePicker } from '@ionic-native/date-picker';
 import { ProfileComponent } from '../components/profile/profile';
 
-import { ToastService } from './../services/toast.service';
-
-
  
 const firebaseConfig = {
     apiKey: "AIzaSyCUE7XBqhtqVHBbI1ZpKDS6uY7O7DHgTAs",
@@ -77,7 +74,6 @@ const firebaseConfig = {
     AuthService,
     AngularFireAuth,
     Facebook,
-    ToastService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     
   ]

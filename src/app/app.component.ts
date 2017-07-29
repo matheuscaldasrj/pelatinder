@@ -10,7 +10,6 @@ import { LoginPage } from '../pages/login/login';
 //services
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from '../providers/auth-service/auth-service';
-import { ToastService } from './../services/toast.service';
 
 @Component({
   templateUrl: 'app.html'
@@ -29,7 +28,6 @@ export class MyApp {
     public splashScreen: SplashScreen,
     afAuth: AngularFireAuth,
     private authService: AuthService,
-    private toastService: ToastService,
     private toastCtrl: ToastController) {
     
     this.toast = this.toastCtrl.create({

@@ -9,9 +9,7 @@ export class ProfileComponent {
 
   @Input() user: User;
 
-  constructor() {
-    console.log('Hello ProfileComponent Component');
-  }
+  constructor() { }
 
 
 }

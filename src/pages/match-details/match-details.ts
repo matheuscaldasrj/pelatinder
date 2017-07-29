@@ -1,5 +1,8 @@
+import { Observable } from 'rxjs/Observable';
+import { FirebaseListObservable } from 'angularfire2/database';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { MatchRest } from './../../models/matchRest.model';
 import { Match } from './../../models/match.model';
 import { User } from './../../models/user.model';
 import { FirebaseService } from './../../services/firebase.service';
@@ -11,16 +14,35 @@ import { FirebaseService } from './../../services/firebase.service';
 })
 export class MatchDetailsPage {
 
-  match : Match;
+  match : Match
   user: User;
+  membersIds;
+  members: User[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public firebaseService: FirebaseService) {
-    this.match = this.navParams.data.match;
-    this.user = this.navParams.data.user;
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public firebaseService: FirebaseService,
+              private toastCtrl: ToastController) {
+
+    this.match = this.navParams.get("match");
+    this.user = this.navParams.get("user");
+
+    
+    this.buildMembersId();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MatchDetailsPage');
+  buildMembersId(){
+    this.members = new Array();
+
+    this.membersIds = this.getAllAttributes(this.match.members);
+    
+    this.membersIds.forEach(memberId => {
+    this.firebaseService.getUserInfo(memberId)
+                        .subscribe( (user : User) =>{
+                            this.members.push(user);
+                        })
+    });
+    
   }
 
   deleteMatch(){
@@ -29,10 +51,28 @@ export class MatchDetailsPage {
   }
 
   joinMatch(){
-    console.log("join match function")
-    console.log(this.match);
-    //todo - only one method
-    this.firebaseService.addMatchToUser(this.match['$key'],this.user);
-    this.firebaseService.addMemberToMatch(this.match['$key'], this.user);
+    this.firebaseService.joinUserToMatch(this.match.$key, this.user).then( () => {
+      this.upateMatch();
+    });
   }
+
+  upateMatch(){
+    this.firebaseService.getMatch(this.match.$key).subscribe( (res)=>{
+      this.match = res;
+      this.buildMembersId();
+    })
+  }
+  getAllAttributes(object : Object) : string[]{
+    let array = new Array();
+
+    for (var property in object) {
+        if (object.hasOwnProperty(property)) {
+            array.push(property);
+        }
+    }
+    return array;
+  }
+
+
+
 }

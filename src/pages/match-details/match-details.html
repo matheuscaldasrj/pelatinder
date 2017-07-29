@@ -15,6 +15,10 @@ Data: {{match.date | date : format : timezone}} <br><br>
 Local: {{match.local}} <br><br>
 Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}} <br><br>
 
+Participantes: 
+<div *ngFor="let currentMember of members" class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
+
+
 
 <button (click)="deleteMatch()" block ion-button color="danger" round>
   Excluir
