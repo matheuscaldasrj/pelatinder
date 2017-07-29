@@ -14,19 +14,24 @@ Nome: {{match.name}} <br><br>
 Data: {{match.date | date : format : timezone}} <br><br>
 Local: {{match.local}} <br><br>
 Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}} <br><br>
+Criado por:  {{match.createdBy}} <br><br>
 
 Participantes: 
 <div *ngFor="let currentMember of members" class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
 
 
 
-<button (click)="deleteMatch()" block ion-button color="danger" round>
+<button *ngIf="isUserAdmin()" (click)="deleteMatch()" block ion-button color="danger" round>
   Excluir
 </button>
 
-<button (click)="joinMatch()" block ion-button round>
+<button *ngIf="!isUserAlreadyParticipating()" (click)="joinMatch()" block ion-button round>
   Entrar
 </button>
+{{isUserAlreadyParticipating()}}
+<button *ngIf="isUserAlreadyParticipating()" (click)="leaveMatch()" block ion-button round color="danger">
+  Sair
+</button>
 
-
+{{isUserAdmin()}}
 </ion-content>

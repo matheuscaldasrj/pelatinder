@@ -25,7 +25,7 @@ export class MatchDetailsPage {
     this.user = this.navParams.get("user");
 
     
-    this.buildMembersId();
+    this.updateMatch();
   }
 
   buildMembersId(){
@@ -49,11 +49,11 @@ export class MatchDetailsPage {
 
   joinMatch(){
     this.firebaseService.joinUserToMatch(this.match.$key, this.user).then( () => {
-      this.upateMatch();
+      this.updateMatch();
     });
   }
 
-  upateMatch(){
+  updateMatch(){
     this.firebaseService.getMatch(this.match.$key).subscribe( (res)=>{
       this.match = res;
       this.buildMembersId();
@@ -68,6 +68,18 @@ export class MatchDetailsPage {
         }
     }
     return array;
+  }
+
+  isUserAlreadyParticipating(){
+    return this.membersIds.indexOf(this.user.uid) > -1
+  }
+
+  isUserAdmin(){
+    return this.user.uid == this.match.createdBy;
+  }
+  leaveMatch(){
+    alert("leaveMatch function");
+    this.firebaseService.leaveMatch(this.match.$key, this.user);
   }
 
 
