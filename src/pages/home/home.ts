@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FirebaseService } from './../../services/firebase.service';
-import { MatchRest } from './../../models/matchRest.model';
 import { Match } from './../../models/match.model';
 import { User } from './../../models/user.model';
 import {NewMatchPage} from './../new-match/new-match';
 import {MatchDetailsPage} from './../match-details/match-details';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-import { FirebaseListObservable } from "angularfire2/database";
 
 @Component({
   selector: 'page-home',
@@ -17,7 +15,6 @@ import { FirebaseListObservable } from "angularfire2/database";
 
 export class HomePage {
 
-  nextMatchesRest: MatchRest[];
   nextMatches: Match[];
   user: User;
   teste;
@@ -53,50 +50,6 @@ export class HomePage {
       });
 
   }
-  
-  teste2(){
-    console.log(this.teste);
-    
-  }
-  buildMatchesFromMatchRest(){
-    //  console.log("buildMatchesFromMatchRest")
-    //  this.nextMatches = new Array();
-    //   console.log(this.nextMatchesRest);
-    //     for (var i = 0; i < this.nextMatchesRest.length; i++) {
-    //       var currentMatchRest = this.nextMatchesRest[i];
-    //       //buildMatch
-    //       var currentMatch = new Match();
-    //       currentMatch.currentNumOfPlayers = currentMatchRest.currentNumOfPlayers;
-    //       currentMatch.date = currentMatchRest.date;
-    //       currentMatch.local = currentMatchRest.local;
-    //       currentMatch.name = currentMatchRest.name;
-    //       currentMatch.numOfPlayers = currentMatchRest.numOfPlayers;
-    //       currentMatch.members = new Array<User>();
-    //       console.log("current match esta até agora: ")
-
-    //       console.log(currentMatch);
-
-    //       for (var property in currentMatchRest.members) {
-    //           if (currentMatchRest.members.hasOwnProperty(property)) {
-    //              console.log("loop das properites");
-    //              console.log(property);
-
-    //               this.firebaseService.getUserInfo(property).subscribe( user => {
-    //                 let currentUser = <User> user;    
-    //                 console.log("o user que veio foi: ");
-    //                 console.log(currentUser);   
-    //                 currentMatch.members.push(user);             
-    //               })
-    //           }
-    //       }
-
-    //       this.nextMatches.push(currentMatch);
-    //       console.log("this.nextMatches lala");
-    //       console.log(this.nextMatches)
-
-    //     }
-  }
-
   
   createNewMatch(){
     this.navCtrl.push(NewMatchPage,{

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { FirebaseService } from './../../services/firebase.service';
-import { MatchRest } from './../../models/matchRest.model';
 
 import { DatePicker } from '@ionic-native/date-picker';
 import { User } from './../../models/user.model';

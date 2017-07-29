@@ -1,9 +1,6 @@
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
-import { MatchRest } from './../models/matchRest.model'
 import { Match } from './../models/match.model'
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/first'
 
 
 import { User } from './../models/user.model';

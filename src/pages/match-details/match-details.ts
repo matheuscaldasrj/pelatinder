@@ -1,8 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { FirebaseListObservable } from 'angularfire2/database';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
-import { MatchRest } from './../../models/matchRest.model';
 import { Match } from './../../models/match.model';
 import { User } from './../../models/user.model';
 import { FirebaseService } from './../../services/firebase.service';
