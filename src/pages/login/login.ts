@@ -7,6 +7,8 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import {HomePage} from './../home/home';
 import {ToastService} from './../../services/toast.service';
 
+import { CreateAccountPage } from './../create-account/create-account';
+import { LoginEmailPage } from './../login-email/login-email';
 
 @IonicPage()
 @Component({
@@ -33,7 +35,15 @@ export class LoginPage {
     });
   }
 
+  signInWithEmail() : void {
+    this.navCtrl.push(LoginEmailPage);
+  }
+
    goToHomePage(){ 
-      this.navCtrl.setRoot(HomePage, { });
+      this.navCtrl.setRoot(HomePage);
+   }
+
+   goToCreateAccount(){
+      this.navCtrl.push(CreateAccountPage);
    }
 }

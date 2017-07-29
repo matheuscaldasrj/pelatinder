@@ -15,7 +15,7 @@
   </h2>
 
 
-  <ion-card *ngFor="let currentMatch of nextMatches" (click)="showDetails(currentMatch)">
+  <ion-card *ngFor="let currentMatch of nextMatches | async" (click)="showDetails(currentMatch)">
     <ion-card-content>
       <ion-card-title class="card">
         {{currentMatch.name}}

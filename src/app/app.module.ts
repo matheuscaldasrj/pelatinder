@@ -6,6 +6,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { NewMatchPage } from '../pages/new-match/new-match';
 import { MatchDetailsPage } from '../pages/match-details/match-details';
+import { CreateAccountPage } from './../pages/create-account/create-account';
+import { LoginEmailPage } from './../pages/login-email/login-email';
 import { LoginPage } from '../pages/login/login';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -46,7 +48,9 @@ const firebaseConfig = {
     NewMatchPage,
     MatchDetailsPage,
     LoginPage,
-    ProfileComponent
+    ProfileComponent,
+    CreateAccountPage,
+    LoginEmailPage
   ],
   imports: [
     BrowserModule,
@@ -61,7 +65,9 @@ const firebaseConfig = {
     HomePage,
     NewMatchPage,
     MatchDetailsPage,
-    LoginPage
+    LoginPage,
+    CreateAccountPage,
+    LoginEmailPage
   ],
   providers: [
     StatusBar,
