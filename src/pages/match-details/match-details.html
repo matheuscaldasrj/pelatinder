@@ -10,28 +10,25 @@
 <ion-content padding>
 
 
-Nome: {{match.name}} <br><br>
-Data: {{match.date | date : format : timezone}} <br><br>
-Local: {{match.local}} <br><br>
-Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}} <br><br>
-Criado por:  {{match.createdBy}} <br><br>
+  Nome: {{match.name}} <br><br>
+  Data: {{match.date | date : format : timezone}} <br><br>
+  Local: {{match.local}} <br><br>
+  Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}} <br><br>
 
-Participantes: 
-<div *ngFor="let currentMember of members" class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
+  Participantes: 
+  <div *ngFor="let currentMember of members" class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
 
+  <button *ngIf="isUserAdmin()" (click)="deleteMatch()" block ion-button color="danger" round>
+    Excluir
+  </button>
 
+  <button *ngIf="!isUserAlreadyParticipating() && !isUserAdmin()" (click)="joinMatch()" block ion-button round>
+    Entrar
+  </button>
+  
+  <!-- only show quit button if you are already participating and you are not alone -->
+  <button *ngIf="isUserAlreadyParticipating() && !isUserAdmin()" (click)="leaveMatch()" block ion-button round color="danger">
+    Sair
+  </button>
 
-<button *ngIf="isUserAdmin()" (click)="deleteMatch()" block ion-button color="danger" round>
-  Excluir
-</button>
-
-<button *ngIf="!isUserAlreadyParticipating()" (click)="joinMatch()" block ion-button round>
-  Entrar
-</button>
-{{isUserAlreadyParticipating()}}
-<button *ngIf="isUserAlreadyParticipating()" (click)="leaveMatch()" block ion-button round color="danger">
-  Sair
-</button>
-
-{{isUserAdmin()}}
 </ion-content>
