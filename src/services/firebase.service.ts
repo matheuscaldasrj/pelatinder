@@ -24,7 +24,9 @@ export class FirebaseService{
     getUserInfo(userId: string){
         return this.angularFireDatabase.object('/users/' + userId)
     }
-    
+     getUserInfo2(userId: string){
+        return this.angularFireDatabase.object('/users/' + userId , { preserveSnapshot: true });
+    }
     addMatch(match : Match, user : User){
        return this.angularFireDatabase.list('/matches').push(match).then((res) => {
            return this.addMemberToMatch(res.key, user).then( () => {
@@ -69,14 +71,13 @@ export class FirebaseService{
     }
 
     removeMatch(match : Match){
-
         if(match.$key){
             //removing match from member
             let membersIds = this.getAllAttrbutes(match.members);
             membersIds.forEach(memberId => {
-                this.angularFireDatabase.list('/users/' + memberId + '/matches').remove(match.$key);
+                this.removeMatchFromUser(match.$key,memberId);
             });
-            //removing members from match;
+            //removing match;
             this.angularFireDatabase.list('/matches').remove(match.$key)
         }
 
@@ -94,6 +95,20 @@ export class FirebaseService{
         }
         return array;
   }
+
+     leaveMatch(keyMatch: string, user: User) {
+       return this.removeMatchFromUser(keyMatch, user.uid).then(() => {
+            return this.removeUserFromMatch(keyMatch, user.uid);
+        })
+    }
+ 
+    removeMatchFromUser(keyMatch: string, userId: string) {
+        return this.angularFireDatabase.list('/users/' + userId + "/matches").remove(keyMatch);
+    }
+ 
+    removeUserFromMatch(keyMatch: string, userId: string) {
+        return this.angularFireDatabase.list('/matches/' + keyMatch + "/members").remove(userId);
+    }
 
 
 

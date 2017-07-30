@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { Match } from './../../models/match.model';
 import { User } from './../../models/user.model';
 import { FirebaseService } from './../../services/firebase.service';
@@ -19,7 +19,9 @@ export class MatchDetailsPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public firebaseService: FirebaseService,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private loadingCtrl: LoadingController) {
+    
 
     this.match = this.navParams.get("match");
     this.user = this.navParams.get("user");
@@ -30,14 +32,16 @@ export class MatchDetailsPage {
 
   buildMembersId(){
     this.members = new Array();
-
+    this.membersIds = new Array();
     this.membersIds = this.getAllAttributes(this.match.members);
     
     this.membersIds.forEach(memberId => {
     this.firebaseService.getUserInfo(memberId)
                         .subscribe( (user : User) =>{
+                            
                             this.members.push(user);
-                        })
+                            
+                        });
     });
     
   }
@@ -48,8 +52,16 @@ export class MatchDetailsPage {
   }
 
   joinMatch(){
+    this.members = new Array();
+    let loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: 'Loading Please Wait...'
+    });
+
+    loading.present();
     this.firebaseService.joinUserToMatch(this.match.$key, this.user).then( () => {
-      this.updateMatch();
+      console.log("Member has been added to the match " + this.user.name);
+      loading.dismiss();
     });
   }
 
@@ -77,11 +89,23 @@ export class MatchDetailsPage {
   isUserAdmin(){
     return this.user.uid == this.match.createdBy;
   }
-  leaveMatch(){
-    alert("leaveMatch function");
-    this.firebaseService.leaveMatch(this.match.$key, this.user);
-  }
 
+  leaveMatch(){
+
+
+    this.members = new Array();
+    let loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: 'Loading Please Wait...',
+      duration:2000
+    });
+
+    loading.present();
+
+    this.firebaseService.leaveMatch(this.match.$key, this.user).then( ()=>{
+      loading.dismiss();
+    })
+  }
 
 
 }
