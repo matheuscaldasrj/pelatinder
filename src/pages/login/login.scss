@@ -1,6 +1,7 @@
 page-login {
 
 
+
 .facebook-button{
 
     position: absolute;
@@ -9,6 +10,25 @@ page-login {
     height: 10%;
     margin: 0;
 }
+
+.email-button-login{
+
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    height: 10%;
+    margin: 0;
+}
+
+.email-button-create{
+
+    position: absolute;
+    bottom: 20%;
+    width: 100%;
+    height: 10%;
+    margin: 0;
+}
+
 
 .app-name{
     color: white;

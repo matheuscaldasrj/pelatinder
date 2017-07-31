@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -10,7 +10,6 @@ import { LoginPage } from '../pages/login/login';
 //services
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from '../providers/auth-service/auth-service';
-import {ToastService} from './../services/toast.service';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,22 +19,28 @@ export class MyApp {
 
   // rootPage: any = LoginPage;
   rootPage: any;
+  toast;
 
-  pages: Array<{title: string, component: any, icon: string}>;
+  pages: Array<{ title: string, component: any, icon: string }>;
 
   constructor(public platform: Platform,
-              public statusBar: StatusBar,
-              public splashScreen: SplashScreen,
-              afAuth: AngularFireAuth,
-              private authService: AuthService,
-              private toastService : ToastService) {
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    afAuth: AngularFireAuth,
+    private authService: AuthService,
+    private toastCtrl: ToastController) {
+    
+    this.toast = this.toastCtrl.create({
+      duration: 3000,
+      position: 'bottom',
+    });
 
-    const authObserver = afAuth.authState.subscribe( (user) => {
-      if(user){
+    const authObserver = afAuth.authState.subscribe((user) => {
+      if (user) {
         //we already has an user, go directly to home page
         this.rootPage = HomePage;
       }
-      else{
+      else {
         //go to login page
         this.rootPage = LoginPage;
       }
@@ -46,7 +51,7 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage, icon: 'person'}
+      { title: 'Home', component: HomePage, icon: 'person' }
     ];
 
   }
@@ -66,15 +71,33 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
-  signOutFacebook(){
+  signOutFacebook() {
     this.authService.signOut()
-    .then( () =>{
-       this.toastService.presentToast("LogOut efetuado com sucesso!");
+      .then(() => {
+      this.toast.setMessage("Logout com sucesso");
+      this.toast.present();
+
     })
-    .catch( () => {
-       this.toastService.presentToast("Ocorreu um erro ao tentar deslogar");
-    })
-    ;
+    .catch(() => {
+      this.toast.setMessage("Ocorreu um erro ao tentar deslogar");
+      this.toast.present();
+    });
     this.nav.setRoot(LoginPage);
   }
+
+  signOutEmail() {
+
+    this.authService.signOutEmail()
+      .then(() => {
+        this.toast.setMessage("Logout com sucesso");
+        this.toast.present();
+
+      })
+      .catch(() => {
+        this.toast.setMessage("Ocorreu um erro ao tentar deslogar");
+        this.toast.present();
+      });
+    this.nav.setRoot(LoginPage);
+  }
+
 }

@@ -4,6 +4,9 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
+import { NewUser } from './../../models/newUser.model';
+
+
 @Injectable()
 export class AuthService {
   user: Observable<firebase.User>;
@@ -14,7 +17,6 @@ export class AuthService {
 
 
   signinWithFacebook(){
-    console.log("na signinWithFacebook! do AuthService")
     return this.facebook.login(['public_profile','email'])
             .then( (res: FacebookLoginResponse) =>{
                 //this.facebook.api('')
@@ -27,6 +29,16 @@ export class AuthService {
             })
   }
 
+  signInWithEmail(user : NewUser){
+    return this.angularFireAuth.auth.signInWithEmailAndPassword(user.email, user.password);
+  }
+  createUser(user : NewUser){
+    return this.angularFireAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
+  }
+
+  signOutEmail(){
+    return this.angularFireAuth.auth.signOut();
+  }
   signOut(){
     let providerData = this.angularFireAuth.auth.currentUser.providerData;
     if(providerData.length){

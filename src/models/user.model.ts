@@ -1,15 +1,11 @@
 export class User {
     
+    $key: string;
     name: string;
     email: string;
     photo: string;
+    uid: string;
+    matches: string[];
 
-
-    constructor(name? : string, email? : string, photo? : string){
-        this.name = name;
-        this.email = email;
-        this.photo = photo;
-      
-    }
 
 }

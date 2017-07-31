@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { FirebaseService } from './../../services/firebase.service';
-import { Match } from './../../models/match.model';
 
 import { DatePicker } from '@ionic-native/date-picker';
+import { User } from './../../models/user.model';
+import { Match } from './../../models/match.model';
 
 @IonicPage()
 @Component({
@@ -16,34 +17,47 @@ export class NewMatchPage {
   local: string;
   date;
   numberOfPeople: number;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public firebaseService: FirebaseService, public datePicker : DatePicker) {
-    this.date = new Date();
-}
+  user: User;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad NewMatchPage');
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public firebaseService: FirebaseService,
+    public datePicker: DatePicker,
+    private toastCtrl: ToastController,
+    private alertCtrl: AlertController) {
+    let tempDate = new Date();
+    let IsoString = new Date(tempDate.getTime() - (tempDate.getTimezoneOffset() * 60000)).toISOString();
+    this.date = IsoString;
+    this.user = this.navParams.get("user");
   }
 
 
   createNewMatch() {
-    console.log("lets create a new match..");
-    console.log("name: " + this.name + ", local: " + this.local + ", date: " + this.date + ", numero de pessoas: " + this.numberOfPeople);
-    let match = new Match(this.name, this.date.getTime(), this.local, this.numberOfPeople);
-    console.log(match);
-    this.firebaseService.addMatch(match)
+
+    if (!this.name || !this.local || !this.numberOfPeople) {
+      let alert = this.alertCtrl.create({
+        title: 'Campos em branco',
+        subTitle: 'Preencha todos os campos para criar uma nova pelada',
+        buttons: ['Ok']
+      });
+
+      alert.present();
+      return;
+    }
+    let match = new Match(this.name, Date.parse(this.date), this.local, this.numberOfPeople, this.user.uid);
+
+    let toast = this.toastCtrl.create({
+      duration: 3000,
+      position: 'bottom',
+    });
+    this.firebaseService.addMatch(match, this.user)
+      .then(() => { toast.setMessage("Pelada criada com sucesso!"); toast.present(); })
+      .catch((error) => { toast.setMessage("Houve um erro ao tentar criar a pelada"); toast.present(); });
+
     this.navCtrl.pop();
   }
 
-  openDatePicker(){
-    this.datePicker.show({
-    date: new Date(),
-    mode: 'date',
-    androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then(
-      date => this.date = date,
-      err => console.log('Error occurred while getting date: ', err)
-    );
-  }
+
 
 
 

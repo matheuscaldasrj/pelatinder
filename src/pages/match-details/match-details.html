@@ -9,15 +9,37 @@
 
 <ion-content padding>
 
+<ion-item>
+ Nome: {{match.name}}
+</ion-item>
 
-Nome: {{match.name}} <br><br>
-Data: {{match.date | date : format : timezone}} <br><br>
-Local: {{match.local}} <br><br>
-Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}} <br><br>
+<ion-item>
+Data:  {{match.date | date:'HH:mm dd/MM/yy'}}
+</ion-item> 
+<ion-item>
+Local: {{match.local}}
+</ion-item> 
 
+<ion-item>
+Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}
+</ion-item> 
 
-<button (click)="deleteMatch()" block ion-button color="danger" round>
-  Excluir
-</button>
+<ion-item>
+  Participantes: 
+  <div *ngFor="let currentMember of members" class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
+</ion-item> 
+
+  <button *ngIf="isUserAdmin()" (click)="deleteMatch()" block ion-button color="danger" round>
+    Excluir
+  </button>
+
+  <button *ngIf="!isUserAlreadyParticipating() && !isUserAdmin()" (click)="joinMatch()" block ion-button round>
+    Entrar
+  </button>
+  
+  <!-- only show quit button if you are already participating and you are not alone -->
+  <button *ngIf="isUserAlreadyParticipating() && !isUserAdmin()" (click)="leaveMatch()" block ion-button round color="danger">
+    Sair
+  </button>
 
 </ion-content>
