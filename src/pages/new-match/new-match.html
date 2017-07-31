@@ -9,27 +9,36 @@
 
 <ion-content padding>
 
- <ion-item>
-     <ion-label floating>Nome</ion-label>
-     <ion-input type="text" [(ngModel)]="name" ></ion-input>
-   </ion-item>
+  <ion-item>
+    <ion-label floating>Nome</ion-label>
+    <ion-input type="text" [(ngModel)]="name"></ion-input>
+  </ion-item>
 
   <ion-item>
-     <ion-label floating>Local</ion-label>
-     <ion-input type="text" [(ngModel)]="local" ></ion-input>
-   </ion-item>
+    <ion-label floating>Local</ion-label>
+    <ion-input type="text" [(ngModel)]="local"></ion-input>
+  </ion-item>
 
-   <ion-item>
-      <ion-label floating>Numero de Pessoas</ion-label>
-      <ion-input ng-disable="true" type="number" [(ngModel)]="numberOfPeople" ></ion-input>
-    </ion-item>
+  <ion-item>
+    <ion-label>Hora</ion-label>
+    <ion-datetime displayFormat="H:mm" pickerFormat="H:mm" [(ngModel)]="date"></ion-datetime>
+  </ion-item>
 
-     <ion-item>
-      <ion-input (click)="openDatePicker()" [(ngModel)]="date" ></ion-input>
-    </ion-item>
-    
+  <ion-item>
+    <ion-label>Dia</ion-label>
+    <ion-datetime displayFormat="DDDD, DD de MMM de YYYY" 
+                  dayNames="Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado"
+                  monthShortNames= "Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez"
+                  pickerFormat="DDDD/DD/MMM/YY"
+                  [(ngModel)]="date"></ion-datetime>
+  </ion-item>
 
-    <button (click)="createNewMatch()" block ion-button color="secondary" round>
+  <ion-item>
+    <ion-label floating>Número ncessário</ion-label>
+    <ion-input ng-disable="true" type="number" [(ngModel)]="numberOfPeople"></ion-input>
+  </ion-item>
+
+  <button (click)="createNewMatch()" block ion-button color="secondary" round>
       Criar
     </button>
 
