@@ -52,7 +52,7 @@ export class MatchDetailsPage {
 
  let alert = this.alertCtrl.create({
     title: 'Confirmar exclusão',
-    message: 'Você foi o criador da pelada e se excluir ela será deletada. Tem certeza disso?',
+    message: 'Você foi o criador da pelada e se excluir ela será deletada para sempre. Tem certeza disso?',
     buttons: [
       {
         text: 'Cancel',
