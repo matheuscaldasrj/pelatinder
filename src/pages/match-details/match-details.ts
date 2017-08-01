@@ -26,7 +26,7 @@ export class MatchDetailsPage {
     public firebaseService: FirebaseService,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    private alertCtrl : AlertController) {
+    private alertCtrl: AlertController) {
 
     this.currentTime = new Date();
     this.match = this.navParams.get("match");
@@ -35,6 +35,13 @@ export class MatchDetailsPage {
 
 
     this.updateMatch();
+  }
+
+  updateMatch() {
+    this.firebaseService.getMatch(this.match.$key).subscribe((res) => {
+      this.match = res;
+      this.buildMembersId();
+    })
   }
 
   buildMembersId() {
@@ -56,29 +63,29 @@ export class MatchDetailsPage {
 
   deleteMatch() {
 
- let alert = this.alertCtrl.create({
-    title: 'Confirmar exclusão',
-    message: 'Você foi o criador da pelada e se excluir ela será deletada para sempre. Tem certeza disso?',
-    buttons: [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked in delete confirmation');
+    let alert = this.alertCtrl.create({
+      title: 'Confirmar exclusão',
+      message: 'Você foi o criador da pelada e se excluir ela será deletada para sempre. Tem certeza disso?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked in delete confirmation');
+          }
+        },
+        {
+          text: 'Ok',
+          handler: () => {
+            this.firebaseService.removeMatch(this.match);
+            this.navCtrl.pop();
+          }
         }
-      },
-      {
-        text: 'Ok',
-        handler: () => {
-          this.firebaseService.removeMatch(this.match);
-          this.navCtrl.pop();
-        }
-      }
-    ]
-  });
-  alert.present();
+      ]
+    });
+    alert.present();
 
-    
+
   }
 
   joinMatch() {
@@ -95,12 +102,7 @@ export class MatchDetailsPage {
     });
   }
 
-  updateMatch() {
-    this.firebaseService.getMatch(this.match.$key).subscribe((res) => {
-      this.match = res;
-      this.buildMembersId();
-    })
-  }
+
   getAllAttributes(object: Object): string[] {
     let array = new Array();
 
@@ -135,20 +137,20 @@ export class MatchDetailsPage {
     })
   }
 
-  confirm(){
+  confirm() {
     alert("Confirmado");
   }
 
-  wontGo(){
+  wontGo() {
     alert("Não vai");
   }
 
-  getFirstName(member: User){
+  getFirstName(member: User) {
     var names = member.name.split(' ');
     return names[0];
   }
 
-  getDayInfo(){
+  getDayInfo() {
     return this.dateUtils.getDayInfo(this.match.date);
   }
 
