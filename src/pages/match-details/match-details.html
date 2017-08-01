@@ -16,6 +16,22 @@
     Local: {{match.local}}
   </ion-item>
 
+  <ion-item *ngIf="isUserAlreadyParticipating()" class="confirmed">
+    Confirmados: <span *ngIf="confirmedMembers">Ninguém confirmou :(</span>
+    <div *ngFor="let member of confirmedMembers">
+      <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
+      <caption>{{getFirstName(member)}}</caption>
+    </div>
+  </ion-item>
+
+  <ion-item *ngIf="isUserAlreadyParticipating()" class="wontGo">
+    Não vão:
+    <div *ngFor="let member of confirmedMembers">
+      <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
+      <caption>{{getFirstName(member)}}</caption>
+    </div>
+  </ion-item>
+
 
   <ion-item *ngIf="isUserAlreadyParticipating()">
     <ion-label style="text-align: center">Presença</ion-label>
@@ -38,7 +54,7 @@
   </button>
 
 
-  <ion-item>
+  <ion-item *ngIf="isUserAlreadyParticipating()">
     Participantes: {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}.
     <div *ngFor="let currentMember of members">
       <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>

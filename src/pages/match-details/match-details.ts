@@ -18,6 +18,8 @@ export class MatchDetailsPage {
   members: User[];
   currentTime: Date;
   dateUtils: DateUtils;
+  confirmedMembers: User[];
+  wontGoMembers: User[];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
