@@ -10,27 +10,17 @@
 <ion-content padding>
 
   <ion-item>
-    Data: {{match.date | date:'HH:mm'}}h, {{match.date | date:'dd/MM/yy'}} {{getDayInfo()}} 
+    Data: {{match.date | date:'HH:mm'}}h, {{match.date | date:'dd/MM/yy'}} {{getDayInfo()}}
   </ion-item>
   <ion-item>
     Local: {{match.local}}
   </ion-item>
 
 
-  <ion-item>
-   Participantes: {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}.
-    <div *ngFor="let currentMember of members">
-      <div  class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
-      <caption>{{getFirstName(currentMember)}}</caption>
-    </div>
-
-
-  </ion-item>
-
-
-  <ion-item>
+  <ion-item *ngIf="isUserAlreadyParticipating()">
     <ion-label style="text-align: center">Presença</ion-label>
-    <ion-icon (click)="confirm()" style="color:#00FF00; margin-top: -6px" class="confirm" color="secondary" name="thumbs-up" item-right></ion-icon>
+    <ion-icon (click)="confirm()" style="color:#00FF00; margin-top: -6px" class="confirm" color="secondary" name="thumbs-up"
+      item-right></ion-icon>
     <ion-icon (click)="wontGo()" class="confirm" color="danger" name="thumbs-down" item-left></ion-icon>
   </ion-item>
 
@@ -47,6 +37,14 @@
     Sair
   </button>
 
+
+  <ion-item>
+    Participantes: {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}.
+    <div *ngFor="let currentMember of members">
+      <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
+      <caption>{{getFirstName(currentMember)}}</caption>
+    </div>
+  </ion-item>
 
 
 </ion-content>
