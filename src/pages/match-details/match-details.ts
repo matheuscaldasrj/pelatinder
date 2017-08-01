@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ToastController, LoadingController
 import { Match } from './../../models/match.model';
 import { User } from './../../models/user.model';
 import { FirebaseService } from './../../services/firebase.service';
+import { DateUtils } from "../../utils/Date.utils";
 
 @IonicPage()
 @Component({
@@ -15,6 +16,8 @@ export class MatchDetailsPage {
   user: User;
   membersIds;
   members: User[];
+  currentTime: Date;
+  dateUtils: DateUtils;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -23,9 +26,10 @@ export class MatchDetailsPage {
     private loadingCtrl: LoadingController,
     private alertCtrl : AlertController) {
 
-
+    this.currentTime = new Date();
     this.match = this.navParams.get("match");
     this.user = this.navParams.get("user");
+    this.dateUtils = new DateUtils();
 
 
     this.updateMatch();
@@ -79,7 +83,7 @@ export class MatchDetailsPage {
     this.members = new Array();
     let loading = this.loadingCtrl.create({
       spinner: 'hide',
-      content: 'Loading Please Wait...'
+      content: 'Por favor aguarde...'
     });
 
     loading.present();
@@ -115,12 +119,10 @@ export class MatchDetailsPage {
   }
 
   leaveMatch() {
-
-
     this.members = new Array();
     let loading = this.loadingCtrl.create({
       spinner: 'hide',
-      content: 'Loading Please Wait...',
+      content: 'Por favor aguarde..',
       duration: 2000
     });
 
@@ -131,5 +133,21 @@ export class MatchDetailsPage {
     })
   }
 
+  confirm(){
+    alert("Confirmado");
+  }
+
+  wontGo(){
+    alert("Não vai");
+  }
+
+  getFirstName(member: User){
+    var names = member.name.split(' ');
+    return names[0];
+  }
+
+  getDayInfo(){
+    return this.dateUtils.getDayInfo(this.match.date);
+  }
 
 }

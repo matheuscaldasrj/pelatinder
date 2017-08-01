@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Pelada</ion-title>
+    <ion-title>{{match.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -9,25 +9,30 @@
 
 <ion-content padding>
 
-<ion-item>
- Nome: {{match.name}}
-</ion-item>
+  <ion-item>
+    Data: {{match.date | date:'HH:mm'}}h, {{match.date | date:'dd/MM/yy'}} {{getDayInfo()}} 
+  </ion-item>
+  <ion-item>
+    Local: {{match.local}}
+  </ion-item>
 
-<ion-item>
-Data:  {{match.date | date:'HH:mm dd/MM/yy'}}
-</ion-item> 
-<ion-item>
-Local: {{match.local}}
-</ion-item> 
 
-<ion-item>
-Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}
-</ion-item> 
+  <ion-item>
+   Participantes: {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}.
+    <div *ngFor="let currentMember of members">
+      <div  class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
+      <caption>{{getFirstName(currentMember)}}</caption>
+    </div>
 
-<ion-item>
-  Participantes: 
-  <div *ngFor="let currentMember of members" class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
-</ion-item> 
+
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label style="text-align: center">Presença</ion-label>
+    <ion-icon (click)="confirm()" style="color:#00FF00; margin-top: -6px" class="confirm" color="secondary" name="thumbs-up" item-right></ion-icon>
+    <ion-icon (click)="wontGo()" class="confirm" color="danger" name="thumbs-down" item-left></ion-icon>
+  </ion-item>
 
   <button *ngIf="isUserAdmin()" (click)="deleteMatch()" block ion-button color="danger" round>
     Excluir
@@ -36,10 +41,12 @@ Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}
   <button *ngIf="!isUserAlreadyParticipating() && !isUserAdmin()" (click)="joinMatch()" block ion-button round>
     Entrar
   </button>
-  
-  <!-- only show quit button if you are already participating and you are not alone -->
+
+
   <button *ngIf="isUserAlreadyParticipating() && !isUserAdmin()" (click)="leaveMatch()" block ion-button round color="danger">
     Sair
   </button>
+
+
 
 </ion-content>

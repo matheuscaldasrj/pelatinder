@@ -18,7 +18,7 @@
   <ion-card class="card" *ngFor="let currentMatch of nextMatches" (click)="showDetails(currentMatch)">
     <ion-card-content>
       <ion-card-title>
-        {{currentMatch.name}} - {{currentMatch.date | date:'HH:mm'}}h
+        {{currentMatch.name}} - {{currentMatch.date | date:'HH:mm'}}h {{getDayInfo(currentMatch.date)}}
       </ion-card-title>
        {{currentMatch.date | date:'dd/MM/yy'}} em {{currentMatch.local}} <br>
       Confirmados: {{currentMatch.currentNumOfPlayers}} / {{currentMatch.numOfPlayers}} <br>

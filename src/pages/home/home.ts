@@ -7,6 +7,7 @@ import {NewMatchPage} from './../new-match/new-match';
 import {MatchDetailsPage} from './../match-details/match-details';
 
 import { AngularFireAuth } from 'angularfire2/auth';
+import { DateUtils } from "../../utils/Date.utils";
 
 @Component({
   selector: 'page-home',
@@ -18,9 +19,11 @@ export class HomePage {
   nextMatches: Match[];
   user: User;
   teste;
+  dateUtils: DateUtils;
 
   constructor(public navCtrl: NavController,public navParams: NavParams, public firebaseService: FirebaseService, private afAuth: AngularFireAuth) {
 
+      this.dateUtils = new DateUtils();
       const authObserver = afAuth.authState.subscribe(user=>{
 
         if(user){
@@ -33,14 +36,15 @@ export class HomePage {
           this.user.matches = new Array();
           
           if(!user.displayName){
-            this.user.name  = "Diego Ribas";
+            this.user.name  = "Paolo Guerrero";
           }
           if(!user.photoURL){
-            this.user.photo = "http://www.falandodeflamengo.com.br/wp-content/uploads/2016/07/diego-ribas-fenerbahce_jtdm01wkc14o1nizl91rivw2b.jpg"
+            this.user.photo = "http://colunadoflamengo.com/wp-content/uploads/2015/10/1315690202-paolo-guerrero-flamengo-bayern-RPduEf6oief.jpg"
           }
 
           //add user to db (its the first time loggin in)
           this.firebaseService.addUser(this.user);
+          console.log("user has been added to database");
           authObserver.unsubscribe();
         }
       })
@@ -51,19 +55,23 @@ export class HomePage {
 
   }
   
-  createNewMatch(){
+  createNewMatch() : void{
     this.navCtrl.push(NewMatchPage,{
       user: this.user
     });
   }
 
-  showDetails(match : Match){
+  showDetails(match : Match) : void{
     console.log(match);
-    
     this.navCtrl.push(MatchDetailsPage, {
       match: match,
       user: this.user
     });
 
   }
+
+  getDayInfo(dateToBeCompared) : string{
+     return this.dateUtils.getDayInfo(dateToBeCompared);
+  }
+  
 }
