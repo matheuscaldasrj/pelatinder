@@ -17,15 +17,7 @@
   </ion-item>
 
   <ion-item *ngIf="isUserAlreadyParticipating()" class="confirmed">
-    Confirmados: <span *ngIf="confirmedMembers">Ninguém confirmou :(</span>
-    <div *ngFor="let member of confirmedMembers">
-      <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
-      <caption>{{getFirstName(member)}}</caption>
-    </div>
-  </ion-item>
-
-  <ion-item *ngIf="isUserAlreadyParticipating()" class="wontGo">
-    Não vão:
+    <span *ngIf="!(confirmedMembers.length == 0)"> Confirmados: </span> <span *ngIf="confirmedMembers.length == 0">Ninguém confirmou :( </span>
     <div *ngFor="let member of confirmedMembers">
       <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
       <caption>{{getFirstName(member)}}</caption>
@@ -48,6 +40,13 @@
     Entrar
   </button>
 
+  <ion-item *ngIf="wontGoMembers.length > 0 && isUserAlreadyParticipating()" class="wontGo">
+    Não podem ir:
+    <div *ngFor="let member of wontGoMembers">
+      <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
+      <caption>{{getFirstName(member)}}</caption>
+    </div>
+  </ion-item>
 
   <button *ngIf="isUserAlreadyParticipating() && !isUserAdmin()" (click)="leaveMatch()" block ion-button round color="danger">
     Sair
@@ -55,12 +54,11 @@
 
 
   <ion-item *ngIf="isUserAlreadyParticipating()">
-    Participantes: {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}.
+    Todos: {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}.
     <div *ngFor="let currentMember of members">
       <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
       <caption>{{getFirstName(currentMember)}}</caption>
     </div>
   </ion-item>
-
 
 </ion-content>

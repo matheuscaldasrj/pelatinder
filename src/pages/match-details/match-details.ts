@@ -14,10 +14,15 @@ export class MatchDetailsPage {
 
   match: Match
   user: User;
-  membersIds;
-  members: User[];
+
   currentTime: Date;
   dateUtils: DateUtils;
+
+  membersIds;
+  confirmedMembersIds;
+  wontGoMembersIds;
+
+  members: User[];
   confirmedMembers: User[];
   wontGoMembers: User[];
 
@@ -40,24 +45,45 @@ export class MatchDetailsPage {
   updateMatch() {
     this.firebaseService.getMatch(this.match.$key).subscribe((res) => {
       this.match = res;
-      this.buildMembersId();
+      this.buildMembersArrays();
     })
   }
 
-  buildMembersId() {
+  buildMembersArrays() {
     this.members = new Array();
-    this.membersIds = new Array();
     this.membersIds = this.getAllAttributes(this.match.members);
+
+    this.confirmedMembers = new Array();
+    this.confirmedMembersIds = this.getAllAttributes(this.match.confirmedMembers);
+
+
+    this.wontGoMembers = new Array();
+    this.wontGoMembersIds = this.getAllAttributes(this.match.wontGoMembers);
+
+
+    this.confirmedMembersIds.forEach(memberId => {
+      this.firebaseService.getUserInfo(memberId)
+        .subscribe((user: User) => {
+          this.confirmedMembers.push(user);
+        });
+    });
+
 
     this.membersIds.forEach(memberId => {
       this.firebaseService.getUserInfo(memberId)
         .subscribe((user: User) => {
-
           this.members.push(user);
-          console.log(this.members);
-
         });
     });
+
+
+    this.wontGoMembersIds.forEach(memberId => {
+      this.firebaseService.getUserInfo(memberId)
+        .subscribe((user: User) => {
+          this.wontGoMembers.push(user);
+        });
+    });
+
 
   }
 
@@ -118,6 +144,14 @@ export class MatchDetailsPage {
     return this.membersIds.indexOf(this.user.uid) > -1
   }
 
+  isUserConfirmed() {
+    return this.confirmedMembersIds.indexOf(this.user.uid) > -1
+  }
+
+  isUserDeclined(){
+     return this.wontGoMembersIds.indexOf(this.user.uid) > -1
+  }
+
   isUserAdmin() {
     return this.user.uid == this.match.createdBy;
   }
@@ -138,11 +172,15 @@ export class MatchDetailsPage {
   }
 
   confirm() {
-    alert("Confirmado");
+    this.firebaseService.confirmMatch(this.match.$key, this.user).then(() => {
+      console.log("user " + this.user.name + "has confirmed to the match");
+    })
   }
 
   wontGo() {
-    alert("Não vai");
+    this.firebaseService.wontGoMatch(this.match.$key, this.user).then(() => {
+      console.log("user " + this.user.name + " wont go to the match");
+    })
   }
 
   getFirstName(member: User) {

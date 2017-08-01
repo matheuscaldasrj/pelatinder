@@ -36,10 +36,11 @@ export class HomePage {
           this.user.matches = new Array();
           
           if(!user.displayName){
-            this.user.name  = "Paolo Guerrero";
+            //havent logged in with facebook..
+            this.user.name  = "Evérton Ribeiro";
           }
           if(!user.photoURL){
-            this.user.photo = "http://colunadoflamengo.com/wp-content/uploads/2015/10/1315690202-paolo-guerrero-flamengo-bayern-RPduEf6oief.jpg"
+            this.user.photo = "https://i.superesportes.com.br/M-cQsw08OpFNNiwPKbPCUpQPISc=/smart/imgsapp.mg.superesportes.com.br/app/noticia_126420360808/2017/06/05/406486/20170605222547708144o.jpg"
           }
 
           //add user to db (its the first time loggin in)
