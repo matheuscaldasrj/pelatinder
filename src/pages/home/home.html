@@ -28,6 +28,7 @@
   <div >
     {{teste}}
   </div>
-  <button ion-button block (click)="createNewMatch()" color="secondary">Adicionar nova pelada</button>
-
+  <ion-fab right bottom>
+    <button ion-fab color="secondary"(click)="createNewMatch()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

@@ -10,12 +10,19 @@ page-match-details {
 
 }
 
-.confirm{
+.confirmOrDeny{
   font-size: 500%;
 }
 
 .confirmed{
   background: lightgreen;
+}
+
+.userConfirmedOrDenied{
+  float:left; 
+  margin-left: 5%;
+  font-size: 85%;
+  font-weight: bold;
 }
 
 .wontGo{

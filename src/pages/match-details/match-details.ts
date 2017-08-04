@@ -20,11 +20,12 @@ export class MatchDetailsPage {
 
   membersIds;
   confirmedMembersIds;
-  wontGoMembersIds;
+  //in this version player can only confirm
+  // wontGoMembersIds;
 
   members: User[];
   confirmedMembers: User[];
-  wontGoMembers: User[];
+  // wontGoMembers: User[];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -57,8 +58,8 @@ export class MatchDetailsPage {
     this.confirmedMembersIds = this.getAllAttributes(this.match.confirmedMembers);
 
 
-    this.wontGoMembers = new Array();
-    this.wontGoMembersIds = this.getAllAttributes(this.match.wontGoMembers);
+    // this.wontGoMembers = new Array();
+    // this.wontGoMembersIds = this.getAllAttributes(this.match.wontGoMembers);
 
 
     this.confirmedMembersIds.forEach(memberId => {
@@ -77,12 +78,12 @@ export class MatchDetailsPage {
     });
 
 
-    this.wontGoMembersIds.forEach(memberId => {
-      this.firebaseService.getUserInfo(memberId)
-        .subscribe((user: User) => {
-          this.wontGoMembers.push(user);
-        });
-    });
+    // this.wontGoMembersIds.forEach(memberId => {
+    //   this.firebaseService.getUserInfo(memberId)
+    //     .subscribe((user: User) => {
+    //       this.wontGoMembers.push(user);
+    //     });
+    // });
 
 
   }
@@ -148,9 +149,9 @@ export class MatchDetailsPage {
     return this.confirmedMembersIds.indexOf(this.user.uid) > -1
   }
 
-  isUserDeclined(){
-     return this.wontGoMembersIds.indexOf(this.user.uid) > -1
-  }
+  // isUserDeclined(){
+  //    return this.wontGoMembersIds.indexOf(this.user.uid) > -1
+  // }
 
   isUserAdmin() {
     return this.user.uid == this.match.createdBy;
@@ -167,20 +168,54 @@ export class MatchDetailsPage {
     loading.present();
 
     this.firebaseService.leaveMatch(this.match.$key, this.user).then(() => {
-      loading.dismiss();
+        loading.dismiss();
     })
   }
 
-  confirm() {
+  confirmMatch() {
+    let toast = this.toastCtrl.create({
+      duration: 3000,
+      position: 'bottom',
+    });
+
+    toast.setMessage("Confirmado para a pelada");
+
+
     this.firebaseService.confirmMatch(this.match.$key, this.user).then(() => {
       console.log("user " + this.user.name + "has confirmed to the match");
+      toast.present();
     })
   }
 
   wontGo() {
-    this.firebaseService.wontGoMatch(this.match.$key, this.user).then(() => {
-      console.log("user " + this.user.name + " wont go to the match");
-    })
+
+    let alert = this.alertCtrl.create({
+      title: 'Cancelar presença',
+      message: 'Tem certeza que deseja cancelar sua presença?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked in delete confirmation');
+          }
+        },
+        {
+          text: 'Ok',
+          handler: () => {
+             this.firebaseService.wontGoMatch(this.match.$key, this.user).then(() => {
+                console.log("user " + this.user.name + " wont go to the match");
+              })
+          }
+        }
+      ]
+    });
+    alert.present();
+
+
+    // this.firebaseService.wontGoMatch(this.match.$key, this.user).then(() => {
+    //   console.log("user " + this.user.name + " wont go to the match");
+    // })
   }
 
   getFirstName(member: User) {

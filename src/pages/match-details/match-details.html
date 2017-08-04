@@ -8,7 +8,6 @@
 
 
 <ion-content padding>
-
   <ion-item>
     Data: {{match.date | date:'HH:mm'}}h, {{match.date | date:'dd/MM/yy'}} {{getDayInfo()}}
   </ion-item>
@@ -16,49 +15,67 @@
     Local: {{match.local}}
   </ion-item>
 
+
+  <!-- confirmed members -->
   <ion-item *ngIf="isUserAlreadyParticipating()" class="confirmed">
-    <span *ngIf="!(confirmedMembers.length == 0)"> Confirmados: </span> <span *ngIf="confirmedMembers.length == 0">Ninguém confirmou :( </span>
-    <div *ngFor="let member of confirmedMembers">
+     <ion-title style="margin-bottom:5%">Confirmados: {{confirmedMembers.length}} / {{match.numOfPlayers}}</ion-title>
+    <!-- members -->
+    <div  class="userConfirmedOrDenied" *ngFor="let member of confirmedMembers">
       <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
       <caption>{{getFirstName(member)}}</caption>
     </div>
+
+    <!-- default message -->
+    <span *ngIf="!isUserConfirmed() && confirmedMembers.length == 0"style="color: green;font-weight: bold;margin-top: 5;">Seja o primeiro a confirmar!</span>
+
+    <!-- icon -->
+    <ion-icon *ngIf="!isUserConfirmed()" (click)="confirmMatch()" style="color:green" class="confirmOrDeny" color="secondary" name="thumbs-up" item-right></ion-icon>
+  </ion-item>
+
+  <ion-item style="background:lightgreen" *ngIf="isUserConfirmed() && isUserAlreadyParticipating() && !isUserAdmin()">
+    <span style="font-weight: bold; margin-left:32%" >Confirmado!</span>
+     <ion-icon style="font-weight: bold;" (click)="wontGo()" color="danger" name="close" item-right></ion-icon> 
   </ion-item>
 
 
-  <ion-item *ngIf="isUserAlreadyParticipating()">
-    <ion-label style="text-align: center">Presença</ion-label>
-    <ion-icon (click)="confirm()" style="color:#00FF00; margin-top: -6px" class="confirm" color="secondary" name="thumbs-up"
-      item-right></ion-icon>
-    <ion-icon (click)="wontGo()" class="confirm" color="danger" name="thumbs-down" item-left></ion-icon>
-  </ion-item>
+    <!-- wont go members -->
+  <!-- <ion-item *ngIf="wontGoMembers.length > 0 && isUserAlreadyParticipating()" class="wontGo">
+    <span> Ninguém disse que não vai</span>
+    <div class="userConfirmedOrDenied" *ngFor="let member of wontGoMembers">
+      <div  class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
+      <caption style="color:red">{{getFirstName(member)}}</caption>
+    </div>
+     <ion-icon (click)="wontGo()" class="confirmOrDeny" color="danger" name="thumbs-down" item-right></ion-icon>
+  </ion-item> -->
 
-  <button *ngIf="isUserAdmin()" (click)="deleteMatch()" block ion-button color="danger" round>
-    Excluir
-  </button>
-
+  <!-- enter match button -->
   <button *ngIf="!isUserAlreadyParticipating() && !isUserAdmin()" (click)="joinMatch()" block ion-button round>
     Entrar
   </button>
 
-  <ion-item *ngIf="wontGoMembers.length > 0 && isUserAlreadyParticipating()" class="wontGo">
-    Não podem ir:
-    <div *ngFor="let member of wontGoMembers">
-      <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
-      <caption>{{getFirstName(member)}}</caption>
-    </div>
-  </ion-item>
-
-  <button *ngIf="isUserAlreadyParticipating() && !isUserAdmin()" (click)="leaveMatch()" block ion-button round color="danger">
-    Sair
-  </button>
 
 
+
+
+
+<!-- all players -->
   <ion-item *ngIf="isUserAlreadyParticipating()">
-    Todos: {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}.
-    <div *ngFor="let currentMember of members">
+    <ion-title style="margin-bottom:5%">Total de Jogadores: {{members.length}}</ion-title>
+    <div  class="userConfirmedOrDenied" *ngFor="let currentMember of members">
       <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
       <caption>{{getFirstName(currentMember)}}</caption>
     </div>
   </ion-item>
+
+    <!-- quit match button -->
+  <button *ngIf="isUserAlreadyParticipating() && !isUserAdmin()" (click)="leaveMatch()" block ion-button round color="danger">
+    Sair
+  </button>
+
+    <!-- delete button -->
+  <button *ngIf="isUserAdmin()" (click)="deleteMatch()" block ion-button color="danger" round>
+    Excluir pelada
+  </button>
+
 
 </ion-content>

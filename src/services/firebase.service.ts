@@ -98,7 +98,9 @@ export class FirebaseService{
 
      leaveMatch(keyMatch: string, user: User) {
        return this.removeMatchFromUser(keyMatch, user.uid).then(() => {
-            return this.removeUserFromMatch(keyMatch, user.uid);
+            return this.removeUserFromMatch(keyMatch, user.uid).then( ()=> {
+                return this.wontGoMatch(keyMatch, user);
+            });
         })
     }
  
