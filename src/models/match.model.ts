@@ -10,6 +10,8 @@ export class Match {
     currentNumOfPlayers: number;
     createdBy: string;
     members: User[];
+    confirmedMembers: User[];
+    wontGoMembers: User[];
     
 
     constructor(name : string, date ,local : string, numOfPlayers : number, createdBy: string){

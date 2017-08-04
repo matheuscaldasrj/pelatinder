@@ -5,6 +5,8 @@ import { FirebaseService } from './../../services/firebase.service';
 import { DatePicker } from '@ionic-native/date-picker';
 import { User } from './../../models/user.model';
 import { Match } from './../../models/match.model';
+import { DateUtils } from './../../utils/Date.utils';
+
 
 @IonicPage()
 @Component({
@@ -18,6 +20,7 @@ export class NewMatchPage {
   date;
   numberOfPeople: number;
   user: User;
+  dateUtils: DateUtils
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -25,13 +28,17 @@ export class NewMatchPage {
     public datePicker: DatePicker,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController) {
-    let tempDate = new Date();
-    let IsoString = new Date(tempDate.getTime() - (tempDate.getTimezoneOffset() * 60000)).toISOString();
+    
+    this.dateUtils = new DateUtils();
+
+    var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    var IsoString = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
+
     this.date = IsoString;
     this.user = this.navParams.get("user");
   }
 
-
+  
   createNewMatch() {
 
     if (!this.name || !this.local || !this.numberOfPeople) {
@@ -44,7 +51,8 @@ export class NewMatchPage {
       alert.present();
       return;
     }
-    let match = new Match(this.name, Date.parse(this.date), this.local, this.numberOfPeople, this.user.uid);
+
+    let match = new Match(this.name, this.parseISOLocal(this.date).getTime(), this.local, this.numberOfPeople, this.user.uid);
 
     let toast = this.toastCtrl.create({
       duration: 3000,
@@ -58,7 +66,8 @@ export class NewMatchPage {
   }
 
 
-
-
+  parseISOLocal(str) : Date{
+    return this.dateUtils.parseISOLocal(str);
+  }
 
 }

@@ -1,45 +1,81 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Pelada</ion-title>
+    <ion-title>{{match.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-item>
+    Data: {{match.date | date:'HH:mm'}}h, {{match.date | date:'dd/MM/yy'}} {{getDayInfo()}}
+  </ion-item>
+  <ion-item>
+    Local: {{match.local}}
+  </ion-item>
 
-<ion-item>
- Nome: {{match.name}}
-</ion-item>
 
-<ion-item>
-Data:  {{match.date | date:'HH:mm dd/MM/yy'}}
-</ion-item> 
-<ion-item>
-Local: {{match.local}}
-</ion-item> 
+  <!-- confirmed members -->
+  <ion-item *ngIf="isUserAlreadyParticipating()" class="confirmed">
+     <ion-title style="margin-bottom:5%">Confirmados: {{confirmedMembers.length}} / {{match.numOfPlayers}}</ion-title>
+    <!-- members -->
+    <div  class="userConfirmedOrDenied" *ngFor="let member of confirmedMembers">
+      <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
+      <caption>{{getFirstName(member)}}</caption>
+    </div>
 
-<ion-item>
-Número de jogadores:  {{match.currentNumOfPlayers}} / {{match.numOfPlayers}}
-</ion-item> 
+    <!-- default message -->
+    <span *ngIf="!isUserConfirmed() && confirmedMembers.length == 0"style="color: green;font-weight: bold;margin-top: 5;">Seja o primeiro a confirmar!</span>
 
-<ion-item>
-  Participantes: 
-  <div *ngFor="let currentMember of members" class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
-</ion-item> 
+    <!-- icon -->
+    <ion-icon *ngIf="!isUserConfirmed()" (click)="confirmMatch()" style="color:green" class="confirmOrDeny" color="secondary" name="thumbs-up" item-right></ion-icon>
+  </ion-item>
 
-  <button *ngIf="isUserAdmin()" (click)="deleteMatch()" block ion-button color="danger" round>
-    Excluir
-  </button>
+  <ion-item style="background:lightgreen" *ngIf="isUserConfirmed() && isUserAlreadyParticipating() && !isUserAdmin()">
+    <span style="font-weight: bold; margin-left:32%" >Confirmado!</span>
+     <ion-icon style="font-weight: bold;" (click)="wontGo()" color="danger" name="close" item-right></ion-icon> 
+  </ion-item>
 
+
+    <!-- wont go members -->
+  <!-- <ion-item *ngIf="wontGoMembers.length > 0 && isUserAlreadyParticipating()" class="wontGo">
+    <span> Ninguém disse que não vai</span>
+    <div class="userConfirmedOrDenied" *ngFor="let member of wontGoMembers">
+      <div  class="userProfile" [ngStyle]="{ 'background-image': 'url(' + member.photo + ')'}"> </div>
+      <caption style="color:red">{{getFirstName(member)}}</caption>
+    </div>
+     <ion-icon (click)="wontGo()" class="confirmOrDeny" color="danger" name="thumbs-down" item-right></ion-icon>
+  </ion-item> -->
+
+  <!-- enter match button -->
   <button *ngIf="!isUserAlreadyParticipating() && !isUserAdmin()" (click)="joinMatch()" block ion-button round>
     Entrar
   </button>
-  
-  <!-- only show quit button if you are already participating and you are not alone -->
+
+
+
+
+
+
+<!-- all players -->
+  <ion-item *ngIf="isUserAlreadyParticipating()">
+    <ion-title style="margin-bottom:5%">Total de Jogadores: {{members.length}}</ion-title>
+    <div  class="userConfirmedOrDenied" *ngFor="let currentMember of members">
+      <div class="userProfile" [ngStyle]="{ 'background-image': 'url(' + currentMember.photo + ')'}"> </div>
+      <caption>{{getFirstName(currentMember)}}</caption>
+    </div>
+  </ion-item>
+
+    <!-- quit match button -->
   <button *ngIf="isUserAlreadyParticipating() && !isUserAdmin()" (click)="leaveMatch()" block ion-button round color="danger">
     Sair
   </button>
+
+    <!-- delete button -->
+  <button *ngIf="isUserAdmin()" (click)="deleteMatch()" block ion-button color="danger" round>
+    Excluir pelada
+  </button>
+
 
 </ion-content>

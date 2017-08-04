@@ -98,7 +98,9 @@ export class FirebaseService{
 
      leaveMatch(keyMatch: string, user: User) {
        return this.removeMatchFromUser(keyMatch, user.uid).then(() => {
-            return this.removeUserFromMatch(keyMatch, user.uid);
+            return this.removeUserFromMatch(keyMatch, user.uid).then( ()=> {
+                return this.wontGoMatch(keyMatch, user);
+            });
         })
     }
  
@@ -110,6 +112,30 @@ export class FirebaseService{
         return this.angularFireDatabase.list('/matches/' + keyMatch + "/members").remove(userId);
     }
 
+    /**
+     * 
+     * @param keyMatch the match key
+     * @param user the user that has confirmed
+     */
+    public confirmMatch(keyMatch : string, user : User){
+        return this.angularFireDatabase.object('matches/' + keyMatch + "/wontGoMembers/" + user.uid).remove().then( () => {
+            return this.angularFireDatabase.object('matches/' + keyMatch + "/confirmedMembers/" + user.uid).set("true");
+        })
+    }
+
+     /**
+     * 
+     * @param keyMatch the match key
+     * @param user the user that had said he "wont go"
+     */
+    public wontGoMatch(keyMatch : string, user : User){
+        return this.angularFireDatabase.object('matches/' + keyMatch + "/confirmedMembers/" + user.uid).remove().then( () => {
+             return this.angularFireDatabase.object('matches/' + keyMatch + "/wontGoMembers/" + user.uid).set("true");
+        })
+       
+    }
+
+    
 
 
 }
